@@ -1,4 +1,14 @@
 warm_up_env.sh
 prove_with_sketch.py
 verify_lean_proofs.py
-utils.py
+sketch_informal_proof.py
+*.log
+*.sh
+*.txt
+*.json
+*.jsonl
+*.jsonl.gz
+*.jsonl.gz.part
+prove_with_sketch.py
+verify_lean_proofs.py
+sketch_informal_proof.py
