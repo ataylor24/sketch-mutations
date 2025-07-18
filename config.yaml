@@ -1,0 +1,51 @@
+# ---------- DATA I/O -------------
+input_jsonl: data/proofnet.jsonl          # must contain a `problem_statement` field with Lean code
+stage1_out:  /local/ataylor2/mathematical_reasoning/sketch_mutations/mutation_reasoning_chains
+stage2_out:  /local/ataylor2/mathematical_reasoning/sketch_mutations/mutations
+stage3_out:  /local/ataylor2/mathematical_reasoning/sketch_mutations/mutations_verified
+stage4_out:  /local/ataylor2/mathematical_reasoning/sketch_mutations/mutations_verified_proofs
+stage5_out:  /local/ataylor2/mathematical_reasoning/sketch_mutations/validated_proofs
+results_json:  /home/ataylor2/mathematical_reasoning/sketch-mutations/results.json
+
+
+
+# ---------- SKETCHER ----------
+mutator_sketcher:
+  api_type: deepseek                        # openai | azure | deepseek | inception
+  model_name: deepseek-reasoner
+  prompt_type: mutation          # mutation | mutation_cot
+  max_tokens: 8192
+
+# ---------- MUTATOR -------------
+mutator:
+  model_name: deepseek-ai/DeepSeek-Prover-V2-7B  # HuggingFace model id
+  max_new_tokens: 8192
+  num_examples: -1          # -1 means process all sketches
+  use_sketch: true          # use o3 sketch as input
+  prompt_type: mutation          # mutation | mutation_cot
+  overwrite: true          # skip files already processed if true is not set
+  num_return_sequences: 8
+
+# ---------- PROVER -------------
+prover:
+  model_name: deepseek-ai/DeepSeek-Prover-V2-7B  # HuggingFace model id
+  max_new_tokens: 32768
+  num_examples: -1          # -1 means process all sketches        # use o3 sketch as input
+  prompt_type: cot          # cot | default
+  overwrite: true          # skip files already processed if true is not set
+  num_return_sequences: 32
+# ---------- VERIFIER -------------
+verifier:
+  url: http://localhost             # kimina-lean-server base URL
+  timeout: 120                      # seconds per proof
+  batch_size: 0                     # 0 = single bulk request
+  workers: 16                       # parallel processes for batch mode
+  limit: -1                         # -1 to verify all files
+
+
+# ---------- MODE ------------------
+mode:
+  development: true
+  n_problems: 1
+
+
